@@ -1,0 +1,13 @@
+# src/OC/Bundle/UserBundle/Resources/config/routing.yml
+
+oc_platform_user:
+    path:      /login
+    defaults:  { _controller: OCUserBundle:User:login}
+
+oc_platform_user_password:
+    path:      /password
+    defaults:  { _controller: OCUserBundle:User:password}
+    
+oc_platform_user_create:
+    path:      /create
+    defaults:  { _controller: OCUserBundle:User:create}

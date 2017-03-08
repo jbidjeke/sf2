@@ -1,0 +1,3 @@
+oc_platform_accueil:
+    pattern:   /
+    defaults:  {_controller: OCPlatformBundle:Advert:index}

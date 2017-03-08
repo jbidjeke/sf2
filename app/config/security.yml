@@ -1,0 +1,45 @@
+security:
+    encoders:
+        OC\Bundle\UserBundle\Entity\User: pbkdf2
+
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_AUTEUR, ROLE_MODERATEUR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    user:  { password: userpass, roles: [ 'ROLE_AUTEUR' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        main:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # On crée un pare-feu uniquement pour le formulaire
+        #main_login:
+            # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+            #pattern:   ^/login$
+            #anonymous: true # On autorise alors les anonymes sur ce pare-feu
+
+
+        main:
+            pattern:   ^/
+            anonymous: true
+            provider:  main
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+            logout:
+                path:       fos_user_security_logout
+                target:     /
+            remember_me:
+                key:    %secret% # %secret% est un paramètre de parameters.yml
+
+
+    #access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

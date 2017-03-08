@@ -1,0 +1,10 @@
+ffe07b,::1,GET,http://localhost/symfony/,1485516313,7e092c
+7e092c,::1,GET,http://localhost/symfony/,1485516316,
+6fd835,::1,GET,http://localhost/symfony/bundles/framework/css/body.css,1485516341,becbe5
+4911f5,::1,GET,http://localhost/symfony/bundles/framework/css/exception.css,1485516341,c0aa72
+becbe5,::1,GET,http://localhost/symfony/bundles/framework/css/body.css,1485516342,
+c0aa72,::1,GET,http://localhost/symfony/bundles/framework/css/exception.css,1485516342,
+baf0cf,::1,GET,http://localhost/symfony/bundles/framework/css/structure.css,1485516341,0a8a8b
+0a8a8b,::1,GET,http://localhost/symfony/bundles/framework/css/structure.css,1485516343,
+73192f,::1,GET,http://localhost/symfony/platform/add,1485516389,
+392288,::1,GET,http://localhost/symfony/platform/test,1485516429,

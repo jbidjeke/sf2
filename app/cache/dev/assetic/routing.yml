@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: 'C:/Zend/ZendServer/data/apps/http/__default__/0/geoalertinfo/api/symfony/app/config/routing_dev.yml'

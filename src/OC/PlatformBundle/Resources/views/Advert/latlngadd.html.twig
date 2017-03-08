@@ -1,0 +1,118 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/add.html.twig #}
+
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Ajouter une annonce - {{ parent() }}
+{% endblock %}
+
+
+{% block ocplatform_body %}
+  <p>
+      {# On affiche tous les messages flash dont le nom est « notice » #}
+      {% for message in app.session.flashbag.get('notice') %}
+        <p>Message flash : {{ message }}</p>
+      {% endfor %}
+  </p>
+  <p id="geo"></p>
+  <div class="well">
+        <form name="oc_platformbundle_advert" method="post" action="" enctype="multipart/form-data"><div id="oc_platformbundle_advert"><div>                <label for="oc_platformbundle_advert_price" class="required">Price</label><input type="text" id="oc_platformbundle_advert_price" name="oc_platformbundle_advert[price]" required="required" /> €</div><div>                <label for="oc_platformbundle_advert_title" class="required">Title</label><input type="text" id="oc_platformbundle_advert_title" name="oc_platformbundle_advert[title]" required="required" /></div><div>                <label for="oc_platformbundle_advert_author" class="required">Author</label><input type="text" id="oc_platformbundle_advert_author" name="oc_platformbundle_advert[author]" required="required" /></div><div>                <label class="required">User</label><div id="oc_platformbundle_advert_user"><div>                <label for="oc_platformbundle_advert_user_email" class="required">Email</label><input type="text" id="oc_platformbundle_advert_user_email" name="oc_platformbundle_advert[user][email]" required="required" /></div></div></div><div>                <label for="oc_platformbundle_advert_content" class="required">Content</label><textarea id="oc_platformbundle_advert_content" name="oc_platformbundle_advert[content]" required="required"></textarea></div><div>                <label class="required">Image</label><div id="oc_platformbundle_advert_image"><div>                <label for="oc_platformbundle_advert_image_file" class="required">File</label><input type="file" id="oc_platformbundle_advert_image_file" name="oc_platformbundle_advert[image][file]" required="required" /></div></div></div><div>                <label for="oc_platformbundle_advert_categories" class="required">Categories</label><select id="oc_platformbundle_advert_categories" name="oc_platformbundle_advert[categories][]" required="required" multiple="multiple">
+            <option value="2">Voitures</option><option value="3">Motos</option><option value="4">Nautisme</option><option value="5">Ventes immobilieres</option><option value="6">Locations</option><option value="7">Colocations</option><option value="8">Locations de vacances</option><option value="9">Bureaux Commerces</option><option value="10">Maisons</option><option value="11">Loisirs</option><option value="12">Materiel Professionnel</option><option value="13">Emploi Services</option></select></div><div><button type="submit" id="oc_platformbundle_advert_save" name="oc_platformbundle_advert[save]">Save</button></div><div>                <label for="oc_platformbundle_advert_published">Published</label><input type="checkbox" id="oc_platformbundle_advert_published" name="oc_platformbundle_advert[published]" value="1" checked="checked" /></div></div>
+            <input type="hidden" name="lat" value="" />
+            <input type="hidden" name="lng" value="" />
+        </form>
+	</div>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+	  $(document).ready(function() {
+	    // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+	    var $container = $('div#oc_platformbundle_advert_categories');
+	
+	    // On ajoute un lien pour ajouter une nouvelle catégorie
+	    var $addLink = $('<a href="#" id="add_category" class="btn btn-default">Ajouter une catégorie</a>');
+	    $container.append($addLink);
+	
+	    // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+	    $addLink.click(function(e) {
+	      addCategory($container);
+	      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+	      return false;
+	    });
+	
+	    // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+	    var index = $container.find(':input').length;
+	
+	    // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+	    if (index == 0) {
+	      addCategory($container);
+	    } else {
+	      // Pour chaque catégorie déjà existante, on ajoute un lien de suppression
+	      $container.children('div').each(function() {
+	        addDeleteLink($(this));
+	      });
+	    }
+	
+	    // La fonction qui ajoute un formulaire Categorie
+	    function addCategory($container) {
+	      // Dans le contenu de l'attribut « data-prototype », on remplace :
+	      // - le texte "__name__label__" qu'il contient par le label du champ
+	      // - le texte "__name__" qu'il contient par le numéro du champ
+	      var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Catégorie n°' + (index+1))
+	          .replace(/__name__/g, index));
+	
+	      // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+	      addDeleteLink($prototype);
+	
+	      // On ajoute le prototype modifié à la fin de la balise <div>
+	      $container.append($prototype);
+	
+	      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+	      index++;
+	    }
+	
+	    // La fonction qui ajoute un lien de suppression d'une catégorie
+	    function addDeleteLink($prototype) {
+	      // Création du lien
+	      $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+	
+	      // Ajout du lien
+	      $prototype.append($deleteLink);
+	
+	      // Ajout du listener sur le clic du lien
+	      $deleteLink.click(function(e) {
+	        $prototype.remove();
+	        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+	        return false;
+	      });
+        }
+        
+        
+        var x = document.getElementById("geo");
+
+		function getLocation() {
+		    if (navigator.geolocation) {
+		        navigator.geolocation.getCurrentPosition(showPosition);
+		    } else { 
+		        x.innerHTML = "Geolocation is not supported by this browser.";
+		    }
+		}
+		
+		function showPosition(position) {
+		    x.innerHTML = "Latitude: " + position.coords.latitude + 
+		    "<br>Longitude: " + position.coords.longitude;	
+		   
+	    }
+	    
+	    getLocation();
+        
+	  });
+	</script>
+
+  <b style="color:red">Attention </b>: <b>Cette annonce sera  directement sur la page d'accueil avec verification.</b>
+
+
+
+{% endblock %}

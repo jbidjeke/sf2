@@ -1,0 +1,50 @@
+# src/OC/PlatformBundle/Resources/config/routing.yml
+
+oc_platform_home:
+    path:      /
+    defaults:  { _controller: OCPlatformBundle:Advert:index}
+
+
+oc_platform_view:
+    path:      /advert/{id}
+    defaults:  { _controller: OCPlatformBundle:Advert:view }
+    requirements:
+        id: \d+
+        
+oc_platform_view_ajax:
+    path:      /ajax/{category}/{lat}/{lng}/{dist}/{q}
+    defaults:  { _controller: OCPlatformBundle:Advert:ajax, category:"", lat:"", lng:"", dist:"" ,q: "" }
+  
+
+oc_platform_add:
+    path:      /add
+    defaults:  { _controller: OCPlatformBundle:Advert:add }
+
+oc_platform_edit:
+    path:      /edit/{id}
+    defaults:  { _controller: OCPlatformBundle:Advert:edit }
+    requirements:
+        id: \d+
+
+oc_platform_delete:
+    path:      /delete/{id}
+    defaults:  { _controller: OCPlatformBundle:Advert:delete }
+    requirements:
+        id: \d+
+
+oc_platform_password:
+    path:      /password
+    defaults:  { _controller: OCPlatformBundle:Advert:password }
+    
+    
+oc_platform_test:
+    path:      /test
+    defaults:  { _controller: OCPlatformBundle:Advert:test }
+
+
+oc_platform_view_slug:
+    path:      /{year}/{slug}.{_format}.{_locale}
+    defaults:  { _controller: OCPlatformBundle:Advert:viewSlug, _format: html, _locale: fr }
+    requirements:
+        year:   \d{4}
+        _format: html|xml

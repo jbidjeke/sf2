@@ -1,0 +1,60 @@
+<?php
+
+namespace OC\Bundle\UserBundle\Entity;
+
+use FOS\UserBundle\Entity\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="user")
+ */
+class User extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    protected $name;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Advert", mappedBy="user", cascade={"remove", "persist"})
+     */
+    protected $adverts;
+
+    /**
+    * @param string email
+    * @return void 
+    */
+    public function __construct($email=null)
+    {
+
+	    $this->username  = $this->extractOfMail($email)[0];
+	    $this->name = $this->username;
+	    $this->usernameCanonical  = $this->username;
+	    $this->emailCanonical  = $email;
+	    $this->enabled  = 1;
+	    parent::__construct();
+
+    }
+
+    /**
+    * Extract of email
+    * @param string email
+    * @return array 
+    */
+    protected function extractOfMail($email){
+        return \explode('@', $email);
+    }
+    
+    /**
+     * Extract of name
+     * @return string
+     */
+    public function getName(){
+        return $this->name;
+    }
+}
